@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horloge et Pomodoro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+        }
+        .clock, .timer {
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1rem;
+            background: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #e6b800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Horloge et Pomodoro</h1>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="timer" id="timer">25:00</div>
+        <button onclick="startTimer()">Démarrer le Pomodoro</button>
+        <button onclick="resetTimer()">Réinitialiser</button>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+
+        let timerInterval;
+        function startTimer() {
+            let time = 25 * 60;
+            const timerElement = document.getElementById('timer');
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const minutes = String(Math.floor(time / 60)).padStart(2, '0');
+                const seconds = String(time % 60).padStart(2, '0');
+                timerElement.textContent = `${minutes}:${seconds}`;
+                if (--time < 0) {
+                    clearInterval(timerInterval);
+                    alert('Temps écoulé !');
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('timer').textContent = '25:00';
+        }
+    </script>
+</body>
+</html>
